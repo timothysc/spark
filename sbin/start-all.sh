@@ -35,8 +35,9 @@ case $1 in
 shift
 done
 
-# Load the Spark configuration
-. "$sbin/spark-config.sh"
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
 
 # Start Master
 "$sbin"/start-master.sh $TACHYON_STR

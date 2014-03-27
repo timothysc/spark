@@ -36,11 +36,9 @@ case $1 in
 shift
 done
 
-. "$sbin/spark-config.sh"
-
-if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ]; then
-  . "${SPARK_CONF_DIR}/spark-env.sh"
-fi
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
 
 # Find the port number for the master
 if [ "$SPARK_MASTER_PORT" = "" ]; then

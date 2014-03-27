@@ -40,7 +40,9 @@ fi
 sbin=`dirname "$0"`
 sbin=`cd "$sbin"; pwd`
 
-. "$sbin/spark-config.sh"
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
 
 # get arguments
 
@@ -86,21 +88,9 @@ spark_rotate_log ()
     fi
 }
 
-if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ]; then
-  . "${SPARK_CONF_DIR}/spark-env.sh"
-fi
-
-if [ "$SPARK_IDENT_STRING" = "" ]; then
-  export SPARK_IDENT_STRING="$USER"
-fi
-
-
 export SPARK_PRINT_LAUNCH_COMMAND="1"
 
-# get log directory
-if [ "$SPARK_LOG_DIR" = "" ]; then
-  export SPARK_LOG_DIR="$SPARK_HOME/logs"
-fi
+#TODO - This should test 1st prior to creating
 mkdir -p "$SPARK_LOG_DIR"
 touch $SPARK_LOG_DIR/.spark_test > /dev/null 2>&1
 TEST_LOG_DIR=$?
@@ -108,10 +98,6 @@ if [ "${TEST_LOG_DIR}" = "0" ]; then
   rm -f $SPARK_LOG_DIR/.spark_test
 else
   chown $SPARK_IDENT_STRING $SPARK_LOG_DIR
-fi
-
-if [ "$SPARK_PID_DIR" = "" ]; then
-  SPARK_PID_DIR=/tmp
 fi
 
 # some variables

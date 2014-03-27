@@ -20,11 +20,9 @@
 sbin=`dirname "$0"`
 sbin=`cd "$sbin"; pwd`
 
-. "$sbin/spark-config.sh"
-
-if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ]; then
-  . "${SPARK_CONF_DIR}/spark-env.sh"
-fi
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
 
 # do before the below calls as they exec
 if [ -e "$sbin"/../tachyon/bin/tachyon ]; then

@@ -39,7 +39,10 @@ fi
 sbin=`dirname "$0"`
 sbin=`cd "$sbin"; pwd`
 
-. "$sbin/spark-config.sh"
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
+
 
 # If the slaves file is specified in the command line,
 # then it takes precedence over the definition in
@@ -61,10 +64,6 @@ then
     export SPARK_CONF_DIR=$conf_dir
   fi
   shift
-fi
-
-if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ]; then
-  . "${SPARK_CONF_DIR}/spark-env.sh"
 fi
 
 if [ "$HOSTLIST" = "" ]; then

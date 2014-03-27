@@ -31,6 +31,21 @@ script=`basename "$this"`
 config_bin=`cd "$config_bin"; pwd`
 this="$config_bin/$script"
 
-export SPARK_PREFIX=`dirname "$this"`/..
-export SPARK_HOME=${SPARK_PREFIX}
-export SPARK_CONF_DIR="$SPARK_HOME/conf"
+# Allow for a script which overrides the default settings for system integration folks.
+[ -f "$common_bin/spark-layout.sh" ] && . "$common_bin/spark-layout.sh"
+
+if [ -z "$SPARK_SYSTEM_INSTALLATION" ]; then
+  export SPARK_PREFIX=`dirname "$this"`/..
+  export SPARK_HOME=${SPARK_PREFIX}
+  export SPARK_CONF_DIR="$SPARK_HOME/conf"
+  export SPARK_LOG_DIR="$SPARK_HOME/logs"
+  export SPARK_PID_DIR="/tmp"
+  export SPARK_IDENT_STRING="$USER"
+fi
+
+# Environment settings should override * and are administrator controlled.
+if [ -e $SPARK_CONF_DIR/spark-env.sh ] ; then
+  . $SPARK_CONF_DIR/spark-env.sh
+fi
+
+

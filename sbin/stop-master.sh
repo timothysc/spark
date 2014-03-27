@@ -22,7 +22,9 @@
 sbin=`dirname "$0"`
 sbin=`cd "$sbin"; pwd`
 
-. "$sbin/spark-config.sh"
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+SPARK_LIBEXEC_DIR=${SPARK_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $SPARK_LIBEXEC_DIR/spark-config.sh
 
 "$sbin"/spark-daemon.sh stop org.apache.spark.deploy.master.Master 1
 

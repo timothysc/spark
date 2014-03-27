@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+export SPARK_SYSTEM_INSTALLATION="TRUE"
+export SPARK_PREFIX="/var/lib/spark"
+export SPARK_HOME=${SPARK_PREFIX}
+export SPARK_CONF_DIR="/etc/spark"
+export SPARK_LOGS_DIR="/var/log/spark"
+export SPARK_DATA_DIR="/var/run/spark"
+export SPARK_PID_DIR="/tmp"
+export SPARK_IDENT_STRING="$USER"
